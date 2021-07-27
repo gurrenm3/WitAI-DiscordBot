@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>WitAI_DiscordBot.Console</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WitAI DiscordBot.DB\WitAI DiscordBot.Dal.csproj" />
+    <ProjectReference Include="..\WitAI DiscordBot.Lib\WitAI DiscordBot.Lib.csproj" />
+  </ItemGroup>
+
+</Project>
