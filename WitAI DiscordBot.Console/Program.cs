@@ -1,13 +1,14 @@
 ﻿namespace WitAI_DiscordBot.Console
 {
+    using Discord.WebSocket;
     using System;
     using System.IO;
-    using System.Threading;
     using WitAI_DiscordBot.Dal;
     using WitAI_DiscordBot.Lib;
 
     class Program
     {
+        private static ModifyableBot userDiscordBot;
         private static WitClient client;
         private static DiscordBot bot;
         private static BotData botData;
@@ -32,27 +33,16 @@
             if (string.IsNullOrEmpty(botData.WitToken))
                 TryGetWitToken();
 
-            dataAccess = InitDataAccess();
-
             if (!string.IsNullOrEmpty(botData.WitToken))
                 client = new WitClient(botData.WitToken);
 
+            dataAccess = InitDataAccess();
+
+            userDiscordBot = new ModifyableBot();
+
             bot = new DiscordBot(botData.DiscordApiToken);
-            bot.OnMessageRecieved.Add((msg) => 
-            {
-                Console.WriteLine($"Recieved Message from {msg.Author}: \"{msg.Content}\"");
-                
-                DiscordMsg discordMsg = new DiscordMsg()
-                {
-                    Sender = msg.Author.Username,
-                    Message = msg.Content
-                };
-
-                dataAccess.Insert(discordMsg);
-
-                if (client != null)
-                    client.Send(msg.Content);
-            });
+            InitMsgRecieved();
+            bot.OnBotDisposed.Add(() => dataAccess.Dispose());
 
             Console.WriteLine("Finished Initializing!");
             bot.StartBot();
@@ -64,6 +54,26 @@
             string folderPath = Environment.CurrentDirectory;
             string dbPath = Path.Combine(folderPath, dbName);
             return new DataAccess(dbPath);
+        }
+
+        private BotData GetBotData()
+        {
+            string path = Path.Combine(Environment.CurrentDirectory, "WitBot Data.json");
+            return BotData.FromFile(path);
+        }
+
+        private void InitMsgRecieved()
+        {
+            bot.OnMessageRecieved.Add((msg) =>
+            {
+                userDiscordBot.OnMessageRecieved(msg);
+
+                DiscordMsg discordMsg = new DiscordMsg(msg.Author.ToString(), msg.Content);
+                dataAccess.Insert(discordMsg);
+
+                if (client != null)
+                    userDiscordBot.OnWitResponseRecieved(client.Send(msg.Content));
+            });
         }
 
         private bool TryGetDiscordToken()
@@ -100,12 +110,6 @@
             botData.SerializeToFile();
             Console.WriteLine("Token saved!");
             return true;
-        }
-
-        private BotData GetBotData()
-        {
-            string path = Path.Combine(Environment.CurrentDirectory, "WitBot Data.json");
-            return BotData.FromFile(path);
         }
 
         private static void CurrentDomain_ProcessExit(object sender, EventArgs e)

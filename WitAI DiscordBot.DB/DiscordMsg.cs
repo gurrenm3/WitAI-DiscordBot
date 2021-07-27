@@ -11,5 +11,12 @@ namespace WitAI_DiscordBot.Dal
 
         [MaxLength(2000)]
         public string Message { get; set; }
+
+
+        public DiscordMsg(string sender, string msg)
+        {
+            Sender = sender;
+            Message = msg;
+        }
     }
 }
