@@ -1,5 +1,5 @@
 # WitAI-DiscordBot
-A Discord Bot that integrates WitAi for advanced text recognition
+A Discord Bot that integrates [WitAi](https://wit.ai/) for advanced text recognition
 
 ## What is this project?
 This is a discord bot template that uses WitAI for advanced text recognition. You can download the release and run it barebones, or clone the project and setup custom logic using WitAI. 
@@ -9,3 +9,6 @@ The first time you run/build the project it will ask for your Discord Bot Token 
 
 ## How to use it?
 If you simply want to send training data to your WitAI projet and don't care about the discord bot responding, then just download the latest release of the project and run ``WitAI Discord Bot.exe``. If you want to add custom logic to your project, clone the project and modify it as you wish to create your dream discord bot. To keep things easy and prevent programmers from accidentally modifying things they shouldn't, I've created the [ModifyableBot](https://github.com/gurrenm3/WitAI-DiscordBot/blob/master/WitAI%20DiscordBot.Console/Modifyable%20Bot.cs) class where you can put your code. This will help keep your bot's custom logic separate from the rest of the project and help prevent accidental issues.
+
+## More info on WitAI
+To get more info on WitAI, go [here](https://wit.ai/)
