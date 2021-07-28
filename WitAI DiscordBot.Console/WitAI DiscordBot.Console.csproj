@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WitAI DiscordBot.DB\WitAI DiscordBot.Dal.csproj" />
+    <ProjectReference Include="..\WitAI DiscordBot.Dal\WitAI DiscordBot.Dal.csproj" />
     <ProjectReference Include="..\WitAI DiscordBot.Lib\WitAI DiscordBot.Lib.csproj" />
   </ItemGroup>
 
